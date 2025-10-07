@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechService - Manutenção de Computadores e TVs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .hero-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2337d4d411" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-slate-800">TechService - William Nascimento</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-slate-600 hover:text-blue-600 transition-colors">Início</a>
+                    <a href="#services" class="text-slate-600 hover:text-blue-600 transition-colors">Serviços</a>
+                    <a href="#tracking" class="text-slate-600 hover:text-blue-600 transition-colors">Acompanhar</a>
+                    <a href="admin.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Admin</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-blue-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#home" class="block py-2 text-slate-600 hover:text-blue-600">Início</a>
+                <a href="#services" class="block py-2 text-slate-600 hover:text-blue-600">Serviços</a>
+                <a href="#tracking" class="block py-2 text-slate-600 hover:text-blue-600">Acompanhar</a>
+                <a href="admin.html" class="block py-2 text-blue-600 font-medium">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        <span id="typed-text"></span>
+                        <span class="text-blue-400">Especializada</span>
+                    </h1>
+                    <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+                        Soluções completas em manutenção de computadores, notebooks, TVs LED e LCD. 
+                        Diagnóstico preciso, orçamento transparente e garantia de qualidade.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="scrollToForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all transform hover:scale-105">
+                            Solicitar Orçamento
+                        </button>
+                        <button onclick="scrollToTracking()" class="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 rounded-lg font-semibold transition-all">
+                            Acompanhar Serviço
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="floating-element">
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-semibold text-white">Computadores</h3>
+                                    <p class="text-slate-300 text-sm">Manutenção completa</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-semibold text-white">Notebooks</h3>
+                                    <p class="text-slate-300 text-sm">Reparos especializados</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-semibold text-white">TVs LED/LCD</h3>
+                                    <p class="text-slate-300 text-sm">Troca de componentes</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-semibold text-white">Emergência</h3>
+                                    <p class="text-slate-300 text-sm">Atendimento rápido</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">Nossos Serviços</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Oferecemos soluções completas para manutenção e reparo de equipamentos eletrônicos
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-slate-100">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Manutenção de Computadores</h3>
+                    <p class="text-slate-600 mb-6">Diagnóstico completo, formatação, upgrade de hardware, limpeza interna e substituição de componentes.</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Formatação e instalação de SO</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Upgrade de memória e HD</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Limpeza e manutenção preventiva</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-slate-100">
+                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Reparo de Notebooks</h3>
+                    <p class="text-slate-600 mb-6">Especialistas em reparos de placas-mãe, telas, teclados e baterias de todos os modelos.</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Substituição de tela LCD/LED</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Reparo de teclado e touchpad</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Manutenção de sistema de resfriamento</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-slate-100">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Conserto de TVs</h3>
+                    <p class="text-slate-600 mb-6">Reparos em TVs LED e LCD de todas as marcas e tamanhos, com garantia de qualidade.</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-yellow-600 rounded-full mr-3"></span>Substituição de backlight</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-yellow-600 rounded-full mr-3"></span>Reparo de placas de poder</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-yellow-600 rounded-full mr-3"></span>Conserto de problemas de imagem</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Request Form -->
+    <section id="service-form" class="py-20 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">Solicitar Serviço</h2>
+                <p class="text-xl text-slate-600">
+                    Preencha o formulário abaixo para solicitar um orçamento sem compromisso
+                </p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <form id="service-request-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Nome Completo *</label>
+                            <input type="text" id="client-name" required 
+                                   class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Telefone *</label>
+                            <input type="tel" id="client-phone" required 
+                                   class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+                            <input type="email" id="client-email" 
+                                   class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Tipo de Equipamento *</label>
+                            <select id="equipment-type" required 
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                                <option value="">Selecione o tipo</option>
+                                <option value="desktop">Computador Desktop</option>
+                                <option value="notebook">Notebook</option>
+                                <option value="tv-led">TV LED</option>
+                                <option value="tv-lcd">TV LCD</option>
+                                <option value="monitor">Monitor</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Marca/Modelo</label>
+                            <input type="text" id="equipment-brand" placeholder="Ex: Samsung, LG, Dell..." 
+                                   class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Número de Série</label>
+                            <input type="text" id="serial-number" 
+                                   class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Descrição do Problema *</label>
+                        <textarea id="problem-description" rows="4" required 
+                                  placeholder="Descreva detalhadamente o problema que está ocorrendo com seu equipamento..."
+                                  class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Observações Adicionais</label>
+                        <textarea id="additional-notes" rows="3" 
+                                  placeholder="Alguma informação adicional que possa ajudar no diagnóstico..."
+                                  class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"></textarea>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms-agreement" required 
+                               class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                        <label for="terms-agreement" class="ml-2 text-sm text-slate-600">
+                            Concordo com os termos de serviço e autorizo o diagnóstico do equipamento
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 focus:ring-4 focus:ring-blue-200">
+                            Enviar Solicitação
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tracking Section -->
+    <section id="tracking" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">Acompanhar Serviço</h2>
+                <p class="text-xl text-slate-600">
+                    Digite o número do seu protocolo para acompanhar o status do serviço
+                </p>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-8">
+                <div class="max-w-md mx-auto">
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Número do Protocolo</label>
+                        <input type="text" id="tracking-number" placeholder="Ex: TS2024001" 
+                               class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                    </div>
+                    <button onclick="trackService()" 
+                            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-all">
+                        Acompanhar Serviço
+                    </button>
+                </div>
+                <div id="tracking-result" class="hidden mt-8 p-6 bg-white rounded-lg border">
+                    <!-- Result will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-2xl font-bold">TechService - William Nascimento</span>
+                </div>
+                <p class="text-slate-300 mb-4">Manutenção especializada em computadores e TVs</p>
+                <p class="text-slate-400 text-sm">© 2024 TechService. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
